@@ -9,21 +9,29 @@ import MakeLiIcon from './components/makeLiIcon.jsx';
 import linkList from './../../routers/routerLink.js';
 
 
-function mapStateToProps(state,ownProps){
-    return{
-        iconNavStyle: state.ICON_STYLE_NAV
-    }
-}
-function mapDispatchToProps(dispatch,ownProps){
-    return {
-        setNavStyle:()=>{
-            dispatch(setNavStyleAction())
-        }
+// function mapStateToProps(state,ownProps){
+//     return{
+//         iconNavStyle: state.ICON_STYLE_NAV
+//     }
+// }
+// function mapDispatchToProps(dispatch,ownProps){
+//     return {
+//         setNavStyle:()=>{
+//             dispatch(setNavStyleAction())
+//         }
 
-    }
-}
+//     }
+// }
 
-
+ 
+@connect(
+    (state) => {
+      return ({
+        iconNavStyle: state.ICON_STYLE_NAV,
+      });
+    },
+    {setNavStyle: setNavStyleAction}
+)
 
 class NavLeft extends React.Component {
     linkList = linkList;
@@ -43,6 +51,7 @@ class NavLeft extends React.Component {
         )
     }
 };
-export default connect(mapStateToProps,mapDispatchToProps, null, {
-    pure: false
-  })(NavLeft)
+export default NavLeft;
+// export default connect(mapStateToProps,mapDispatchToProps, null, {
+//     pure: false
+//   })(NavLeft)
