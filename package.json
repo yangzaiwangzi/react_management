@@ -1,5 +1,5 @@
 {
-  "name": "aaa",
+  "name": "react_management",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -51,7 +51,12 @@
     "webpack": "4.19.1",
     "webpack-dev-server": "3.1.9",
     "webpack-manifest-plugin": "2.0.4",
-    "workbox-webpack-plugin": "3.6.3"
+    "workbox-webpack-plugin": "3.6.3",
+    "react-redux": "^5.1.1",
+    "node-sass": "^4.10.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1"
   },
   "scripts": {
     "start": "node scripts/start.js",

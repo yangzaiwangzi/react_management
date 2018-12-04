@@ -1,0 +1,115 @@
+.headbox{
+    background-color: #2b3643;
+    height: 50px;
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    line-height: 50px;
+    color:#fff;
+    padding:0 15px;
+    span:first-child{
+        float: left;
+    }
+    span:last-child{
+        float: right;
+        font-size: 14px;
+    }
+}
+.navleft{
+    position: fixed;
+    width: 220px;
+    top:50px;
+    left:0;
+    bottom: 0;
+    color:#fff;
+    background-color: #3f3f3f;
+    ul>li{
+        line-height: 40px;
+        padding:0 5px 0 15px;
+        cursor: pointer;
+        font-size: 14px;
+        p,a{
+            display: block;
+            color:#fff;
+            white-space:nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            width: 100%;
+            .icon-xiangxiajiantou{
+                position: absolute;
+                right:15px;
+                transition:transform .4s;
+            }
+            .up{
+                transform:rotate(180deg);
+            }
+        }
+        p:hover,a:hover{
+            color: #ffd04b;
+        }
+        .active{
+            color: #ffd04b;
+        }
+    }
+    .show{
+        display: block;
+    }
+    .hide{
+        display: none;
+    }
+}
+.navlefticon{
+    position: fixed;
+    top:50px;
+    left:0;
+    bottom: 0;
+    color:#fff;
+    background-color: #3f3f3f;
+    padding:0 10px;
+    width: auto;
+    ul>li{
+        line-height: 40px;
+        padding:0 5px 0 5px;
+        cursor: pointer;
+        font-size: 14px;
+        p,a{
+            display: block;
+            color:#fff;
+            width: 100%; 
+        }
+        p:hover,a:hover{
+            color: #ffd04b;
+        }
+        .active{
+            color: #ffd04b;
+        }
+    }
+    .show{
+        display: block;
+    }
+    .hide{
+        display: none;
+    }
+}
+.iconkey{
+    position: absolute;
+    right: -17px;
+    top: 186px;
+    width: 34px;
+    height: 34px;
+    background-color: #3f3f3f;
+    color: #fff;
+    border-radius: 50%;
+    line-height: 34px;
+    text-align: center;
+    font-weight: bold;
+    transition:transform .2s;
+    &.right{
+        transform:rotate(180deg);
+    }
+}
+.content{
+    margin-top:50px;
+    padding:20px; 
+}
