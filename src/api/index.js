@@ -2,19 +2,19 @@
  * 请求拦截、相应拦截、错误统一处理
  */
 import axios from 'axios';
-import QS from 'qs';
-// import { Toast } from 'mint-ui';
-// import router from '@/router';
-// import store from '@/store/index' 
+import store from '../redux/store/store' 
+import {setLoadingShowAction} from '../redux/action' 
+// import QS from 'qs';
+
 
 // 请求超时时间
 axios.defaults.timeout = 10000;
 // post请求头
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 // 请求拦截器
 axios.interceptors.request.use(    
     config => {
-        // store.commit('auth/showLoad',true);
+        store.dispatch(setLoadingShowAction(true))
         return config;    
     },    
     error => {        
@@ -25,16 +25,10 @@ axios.interceptors.request.use(
 // 响应拦截器
 axios.interceptors.response.use(    
     response => {
-        if (response.data.code == 11) {//未登录
-            // router.push({
-            //     path: '/login',
-            //     query: {backUrl: router.history.current.fullPath}
-            // });
-            // store.commit('auth/setLogined',false);
-            console.log(window.location.href);
+        if (response.data.code === '11') {//未登录
             window.location.href= "http://portal-test.zmlearn.com/login?redirectUrl=" + encodeURIComponent(window.location.href);
         }; 
-        // store.commit('auth/showLoad',false);   
+        store.dispatch(setLoadingShowAction(false)) 
         return Promise.resolve(response); 
     },
     error => {        
@@ -54,10 +48,11 @@ export function GET(url, params){
             params: params        
         })        
         .then(res => {
-            if(!res.data.result){
-                //Toast(res.data.message||'请求异常...');
-            };
-            resolve(res.data);      
+            if(res.data.code!=='0'){
+                console.log(res.data.message||"接口请求出错...");
+            }else{
+                resolve(res.data);  
+            };    
         })        
         .catch(err => {              
             //Toast('响应异常');       
@@ -72,12 +67,13 @@ export function GET(url, params){
  */
 export function POST(url, params) {    
     return new Promise((resolve, reject) => {         
-        axios.post(url, QS.stringify(params))        
+        axios.post(url, params)        
         .then(res => {
-            if(res.data.result&&!res.data.result){
-                //Toast(res.data.message||'响应异常');
-            };
-            resolve(res.data);     
+            if(res.data.code!=='0'){
+                console.log(res.data.message||"接口请求出错...");
+            }else{
+                resolve(res.data);  
+            };   
         })        
         .catch(err => {            
             //Toast('响应异常');           
