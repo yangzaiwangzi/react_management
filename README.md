@@ -95,7 +95,7 @@ export default(state,action)=>{
     }
 }
 ```
-Action会自动触发Reducer，从而达到修改store的数据的目的。
+Action会自动触发Reducer，从而达到修改store的数据的目的。    
 数据的改变，我们需要通知视图的变化，redux使用store.subscribe()，react-redux提供了connect连接UI组件和容器组件。
 ```javascript
 export default connect(mapStateToProps,mapDispatchToProps, null, {
