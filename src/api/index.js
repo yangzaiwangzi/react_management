@@ -3,7 +3,7 @@
  */
 import axios from 'axios';
 import store from '../redux/store/store' 
-import {setLoadingShowAction} from '../redux/action' 
+import { setLoadingShowAction } from '../redux/action' 
 // import QS from 'qs';
 
 
