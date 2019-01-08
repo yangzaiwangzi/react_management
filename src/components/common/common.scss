@@ -8,6 +8,7 @@
     line-height: 50px;
     color:#fff;
     padding:0 15px;
+    z-index: 9;
     span{
         float: left;
     }
@@ -112,4 +113,5 @@
 .content{
     margin-top:50px;
     padding:20px; 
+    min-height: 500px;
 }

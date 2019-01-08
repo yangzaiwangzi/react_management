@@ -1,0 +1,67 @@
+.title{
+    font-size: 16px;
+}
+.inputBox.el-input {
+    width: 220px;
+}
+.el-textarea.inputBox {
+    width: 500px;
+}
+.inputBox .el-input {
+    width: 220px;
+} 
+.singinbox{
+    padding-left: 80px;
+}
+.attends{
+    padding-left:20px;
+    .title{
+        font-size: 14px;
+        color:#595959;
+        margin-bottom: 10px;
+    }
+    .el-input{
+        width: 220px;
+        margin:0 10px;
+    }
+    .el-checkbox{
+        display: block;
+    }
+    .el-checkbox+.el-checkbox {
+        margin-left: 0;
+    }
+    .el-checkbox-group{
+        border: 1px solid #dfe6ec;
+        display: inline-block;
+        width: 160px;
+        padding: 20px 10px;
+        height: 220px;
+        vertical-align: top;
+        font-size: 12px;
+        overflow: auto;
+        .el-checkbox{
+            margin-bottom: 8px;
+            width: 160px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space:nowrap;
+        }
+        .el-checkbox__inner{
+            width: 14px;
+            height:14px;
+            margin-right:8px;
+        }
+        .el-checkbox__inner::after{
+            height: 6px;
+            left:3px;
+        }
+    }
+    .btnbox{
+        display: inline-block;
+        padding: 94px 20px;
+        vertical-align: top;
+    }
+}
+.surebtnbox{
+    padding-left: 520px;
+}

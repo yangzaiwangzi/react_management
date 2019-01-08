@@ -1,14 +1,29 @@
 import React from 'react';
 import {GET,POST} from './../../api/index.js';
-import { Button,Table,Select,Form,Input,DateRangePicker} from 'element-react';
+import { Button,Table,Select,Form,Input,DateRangePicker,Pagination} from 'element-react';
+import {NavLink,Link} from 'react-router-dom';
 import "./index.scss"
 
-class Library extends React.Component {
+import {setDictLocalAction} from './../../redux/action'
+import {connect} from 'react-redux';
+
+@connect(
+    (state) => {
+      return ({
+        dicTlocal: state.DIC_TLOCAL,
+      });
+    },
+    {setDictLocal: setDictLocalAction}
+)
+
+
+class Meeting extends React.Component {
 
     constructor(props){
         super(props);
         this.state={
             listTable:[],
+            total:0,
             time:null,
             params:{
                 meetingType:"",
@@ -22,12 +37,6 @@ class Library extends React.Component {
                 endTime:"",
                 pageNo:1
             },
-            getDictLocal:{
-                meetingType:[],
-                meetingRoomType:[],
-                meetingStatus:[]
-            },
-            value: ''
         }
     }
     
@@ -35,9 +44,16 @@ class Library extends React.Component {
         this.getListData();
         const _data2 = await GET('/api/meeting-mp/dict/getDictLocal',{type:"all"});
         const getDictLocal = _data2.data;
+        this.props.setDictLocal(getDictLocal);
+    }
+    async getListData(){
+        const _data = await POST('/api/meeting-mp/meeting/page',this.state.params);
+        const listTable = _data.data.items; 
+        const total = _data.data.total;
         this.setState({
-            getDictLocal:getDictLocal 
-        });
+            listTable:listTable||[],
+            total
+        });  
     }
     onChangeValue(key, value) { 
         let params = this.state.params;
@@ -46,17 +62,19 @@ class Library extends React.Component {
             params:params
         });
     }
-    async getListData(){
-        const _data = await POST('/api/meeting-mp/meeting/page',this.state.params);
-        const listTable = _data.data.items; 
-        this.setState({
-            listTable:listTable||[]
-        });  
-    }
     async searchBtn(){
         this.getListData()
     }
+    onCurrentChange(val){
+        let params = this.state.params;
+        params.pageNo = val;
+        this.setState({
+            params:params
+        });
+        this.getListData();
+    }
     render() {
+        const {meetingType,meetingRoomType,meetingStatus} = this.props.dicTlocal;
         const columns =  [
             {
               label: "会议名称",
@@ -110,7 +128,14 @@ class Library extends React.Component {
               label: "是否录像",
               prop: "isVideoRecord",
               align:"center",
-              width: 120
+              width: 120,
+              render: (data)=>{
+                return (
+                    <span>
+                        {  data.isVideoRecord?"是":"否" }
+                    </span>
+                ) 
+              }
             },
             {
               label: "创建人",
@@ -129,14 +154,15 @@ class Library extends React.Component {
               prop: "zip",
               fixed: 'right',
               width: 140,
-              render: ()=>{
+              render: (data)=>{
                 return (
                     <span>
-                        <Button type="text" size="small">查看</Button>
-                        <Button type="text" size="small">编辑</Button>
+                        <Button type="text" size="small">查看</Button>&nbsp;&nbsp;
+                        <Link to={`/editMeeting?id=${data.id}`}>
+                            <Button type="text" size="small">编辑</Button>
+                        </Link> 
                     </span>
-                )
-                
+                ) 
               }
             }]
         return(
@@ -145,7 +171,7 @@ class Library extends React.Component {
                     <Form.Item label="会议种类">
                         <Select clearable value={this.state.params.meetingType} placeholder="会议种类"  onChange={this.onChangeValue.bind(this, 'meetingType')} >
                             {
-                                this.state.getDictLocal.meetingType.map(item => {
+                                meetingType.map(item => {
                                     return <Select.Option key={item.value} label={item.desc} value={item.value} />
                                 })
                             } 
@@ -154,7 +180,7 @@ class Library extends React.Component {
                     <Form.Item label="会议室类型">
                         <Select clearable value={this.state.params.meetingRoomType} placeholder="会议室类型" onChange={this.onChangeValue.bind(this, 'meetingRoomType')}>
                             {
-                                this.state.getDictLocal.meetingRoomType.map(item => {
+                                meetingRoomType.map(item => {
                                     return <Select.Option key={item.value} label={item.desc} value={item.value} />
                                 })
                             } 
@@ -163,7 +189,7 @@ class Library extends React.Component {
                     <Form.Item label="状态">
                         <Select clearable value={this.state.params.meetingStatus} placeholder="状态" onChange={this.onChangeValue.bind(this, 'meetingStatus')}>
                             {
-                                this.state.getDictLocal.meetingStatus.map(item => {
+                                meetingStatus.map(item => {
                                     return <Select.Option key={item.value} label={item.desc} value={item.value} />
                                 })
                             } 
@@ -198,7 +224,10 @@ class Library extends React.Component {
                     </Form.Item>
                     <Form.Item>
                         <Button type="primary" size="small" icon="search" onClick={this.searchBtn.bind(this)}>搜索</Button>
-                        <Button type="primary" size="small" icon="edit">新增会议</Button>
+                        &nbsp;&nbsp;
+                        <NavLink to="/editMeeting">
+                            <Button type="primary" size="small" icon="edit">新增会议</Button>
+                        </NavLink> 
                     </Form.Item>
                 </Form>
                 <br/>
@@ -208,8 +237,11 @@ class Library extends React.Component {
                     data={this.state.listTable}
                     border={true}
                 />
+                <div className="paginationBox">
+                    <Pagination layout="total, prev, pager, next" total={this.state.total} onCurrentChange={this.onCurrentChange.bind(this)}/> 
+                </div>
             </div>
         ) 
     }
 }
-export default Library;
+export default Meeting;
