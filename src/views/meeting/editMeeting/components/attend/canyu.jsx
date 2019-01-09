@@ -44,10 +44,17 @@ class Canyu extends React.Component{
         if(id){ 
             const _data = await GET('/api/meeting-mp/meeting/findMeetingUpdate',{id}); 
             const data = _data.data.attends; 
+            const _list = data.map((item)=>{
+                return {
+                    userId:item.userId,
+                    name:item.name,
+                    val:JSON.stringify(item)
+                }
+            })
 
-            this.props.setAttends(data);
+            this.props.setAttends(_list);
             this.setState({
-                attendList:Object.assign({}, this.state.attendList, {list_left:data,list_right:data}), 
+                attendList:Object.assign({}, this.state.attendList, {list_left:_list,list_right:_list}), 
             });
         };
         const setFirstInfo = window.sessionStorage.getItem('setFirstInfo');

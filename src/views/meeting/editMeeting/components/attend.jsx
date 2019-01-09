@@ -29,7 +29,14 @@ class Attend extends React.Component{
         };
     } 
     async surebtn(){
+        let URL = ''; 
         
+        const id = window.location.href.split('?id=')[1];
+        if(id){
+            URL = '/api/meeting-mp/meeting/update';
+        }else{
+            URL = '/api/meeting-mp/meeting/save';
+        };
         const setFirstInfo_sessionStorage = window.sessionStorage.getItem('setFirstInfo');
         let _firstInfo = null;
         if(setFirstInfo_sessionStorage){
@@ -46,13 +53,12 @@ class Attend extends React.Component{
         const _attends = attendsVal.map(item=>{
             return JSON.parse(item.val)
         });
-        const _data = await POST('/api/meeting-mp/meeting/save',{..._firstInfo,compere:_compere,attends:_attends});
+        const _data = await POST(URL,{..._firstInfo,compere:_compere,attends:_attends});
         Message.success(_data.message);
-        console.log(_data);
         window.sessionStorage.removeItem('setFirstInfo');
         this.props.setCompere(null);
         this.props.setAttends(null);
-        this.props.finishSecondStep();
+        window.location.href="/meeting";
 
 
     }       

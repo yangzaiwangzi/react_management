@@ -157,7 +157,6 @@ class Meeting extends React.Component {
               render: (data)=>{
                 return (
                     <span>
-                        <Button type="text" size="small">查看</Button>&nbsp;&nbsp;
                         <Link to={`/editMeeting?id=${data.id}`}>
                             <Button type="text" size="small">编辑</Button>
                         </Link> 

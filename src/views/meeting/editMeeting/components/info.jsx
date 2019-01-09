@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button,Select,Form,Input,DatePicker,Radio,Upload,Message} from 'element-react';
+import { Button,Select,Form,Input,DatePicker,Radio} from 'element-react';
 import {NavLink} from 'react-router-dom';
 import './../index.scss';
 import Timer from './../../../../tools/index.js'
 import {GET} from './../../../../api/index.js';
+import UploadFile from './../../../../components/uploadFile/index.jsx';
 
 import {connect} from 'react-redux'; 
 
@@ -149,35 +150,31 @@ class Info extends React.Component{
         });
     }
     //上传文件 模块
-    beforeUpload(file){ 
-        const MAX_50 = file.size / 1024 / 1024 < 50;  
-        if (!MAX_50) {
-            Message.error('上传头像图片大小不能超过 50MB');
-        }
-        return MAX_50;
-    }
-    handleError() {
-        Message.error('文件上传失败');
-    } 
-    handleRemove(file, fileList) {
-        this.dealFileList(fileList);
-    } 
-    onSuccess(response, file, fileList) {  
-        this.dealFileList(fileList);
-    }
-    dealFileList(fileList){
-        const informations = fileList.map(item => {
-            return item.response?item.response.data[0]:item.url;
-        });
+    onSuccessBack(val){ 
+        let fileList = this.state.fileList;
+        let informations = this.state.form.informations;
+        fileList.push({name:'',url:val.data[0]});
+        informations.push(val.data[0]);
         this.setState({
-            form: Object.assign({}, this.state.form, { informations: informations })
-        });
-    }        
+            fileList,
+            form: Object.assign({}, this.state.form, { informations })
+        })
+    }
+    onRemoveBack(val){
+        let fileList = this.state.fileList;
+        let informations = this.state.form.informations;
+        fileList.splice(val,1);
+        informations.splice(val,1);
+        this.setState({
+            fileList,
+            form: Object.assign({}, this.state.form, { informations })
+        })
+    }  
+           
     render() {
         const fileListDate = this.state.fileList;
         const {meetingName,meetingType,startTime,endTime,meetingRoomType,meetingSign,meetingSignIn,
-                isVideoRecord} = this.state.form; 
-                console.log(fileListDate);
+                isVideoRecord} = this.state.form;
 
 
         return (
@@ -254,21 +251,18 @@ class Info extends React.Component{
                     <Input className="inputBox" type="textarea" rows={5} value={this.state.form.description} onChange={this.onChange.bind(this, 'description','')}></Input>
                 </Form.Item>
                 <Form.Item>
-                    <Upload
-                        action="/api/meeting-mp/api/upload/uploadAttachment"
-                        onError={() => this.handleError()}
-                        beforeUpload={file => this.beforeUpload(file)}
-                        onRemove={(file, fileList) => this.handleRemove(file, fileList)}
-                        onSuccess={(response, file, fileList) => this.onSuccess(response, file, fileList)}
-                        fileList={fileListDate}
-                        limit={20}
-                        onExceed={() => {
-                            Message.warning(`文件选择最多选择20个文件`);
+                    <UploadFile 
+                        text={{
+                            buttonText:"上传"
                         }}
-                        tip={<span className="el-upload__tip">  资料上传，最多20个</span>}
-                        >
-                        <Button size="small" type="primary">点击上传</Button>
-                    </Upload>
+                        uploadUrl="/api/meeting-mp/api/upload/uploadAttachment"
+                        fileList={fileListDate}
+                        onSuccess={this.onSuccessBack.bind(this)}
+                        onRemove={this.onRemoveBack.bind(this)}
+                        maxSize="5000"
+                        accept="image/*"
+
+                    ></UploadFile>
                 </Form.Item>
                 <br/>
                 <Form.Item>

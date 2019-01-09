@@ -37,9 +37,6 @@ class editMeeting extends React.Component{
     tabChanged(tab){
         this.setState({currentName: tab});
     }
-    finish(){
-        this.props.history.push('/meeting')
-    } 
     render(){
         return(
             <section>
@@ -49,7 +46,7 @@ class editMeeting extends React.Component{
                         <Info finishFirstStep={(val)=>this.tabChanged(val)}/>
                     </Tabs.Pane>
                     <Tabs.Pane label="选择参会人" name="2">
-                        <Attend finishSecondStep={this.finish.bind()}></Attend>
+                        <Attend></Attend>
                     </Tabs.Pane>
                 </Tabs> 
             </section>
