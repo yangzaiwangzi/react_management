@@ -3,7 +3,7 @@ const proxy = require('http-proxy-middleware');
 module.exports = function(app) { 
 
     const options = {
-        target: 'https://portal-test.zmlearn.com', 
+        target: 'xxx', 
         changeOrigin: true, 
         ws: false, 
         pathRewrite: {
