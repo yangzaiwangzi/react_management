@@ -5,7 +5,8 @@ import Home from './../views/Home/index.jsx';
 import Meeting from './../views/meeting/index.jsx';
 import EditMeeting from './../views/meeting/editMeeting/index.jsx';
 
-import Test from './../components/uploadFile/test.jsx';
+// import Test from './../components/uploadFile/test.jsx';
+import Test from './../views/test/Test.jsx';
 import Error from './../views/404/index.jsx';
 
 class routerContent extends React.Component {
